@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 router.get('/', (request, response) => {
-    response.send('pagina principal')
+    response.render('admin/index.handlebars')
 })
 
 router.get('/posts', (request, response) => {
