@@ -3,12 +3,11 @@
     const app = express()
     const handlebars = require('express-handlebars')
     const admin = require('./routes/admin')
-    const bodyparser = require('body-parser')
     //const mongoose = require('mongoose')
 // configuracao
-    // body parser
-        app.use(bodyparser.urlencoded({extended: true}))
-        app.use(bodyparser.json())
+    // express
+        app.use(express.urlencoded({extended: true}))
+        app.use(express.json())
     // handlebars
         app.engine('handlebars', handlebars.engine({defaultLayout: 'main'}))
         app.set('view engine', 'handlebars')
