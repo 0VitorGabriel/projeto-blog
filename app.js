@@ -3,7 +3,7 @@
     const app = express()
     const handlebars = require('express-handlebars')
     const admin = require('./routes/admin')
-    //const mongoose = require('mongoose')
+    const mongoose = require('mongoose')
 // configuracao
     // express
         app.use(express.urlencoded({extended: true}))
@@ -13,6 +13,12 @@
         app.set('view engine', 'handlebars')
         app.set('views', './views')
     // mongoose
+        mongoose.Promise = global.Promise
+        mongoose.connect('mongodb://127.0.0.1/blog').then(() => {
+            console.log('banco conectado com sucesso')
+        }).catch((err) => {
+            console.log('erro ao se conectar ' + err)
+        })
 // rotas
     app.get('/', (request, response) => {
         response.send('pagina principal')
