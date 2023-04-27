@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const schema = mongoose.schema
 
-const Categoria = new mongoose.schema({
+const Categoria = new schema({
     nome: {
         type: String,
         required: true
