@@ -24,9 +24,11 @@ router.post('/categorias/nova', (request, response) => {
 
     new categoria(nova_categoria).save()
     .then(() => {
-        console.log('categoria salva')
+        request.flash('success_msg', 'categoria enviada com sucesso')
+        response.redirect('/admin/categorias')
     }).catch((err) => {
-        console.log('categoria não salva' + err)
+        request.flash('error_msg', 'erro ao enviar a categoria')
+        response.redirect('/admin')
     })
 })
 

@@ -16,8 +16,8 @@
         app.use(flash())
     // midleware
         app.use((request, response, next) => {
-            response.locals.success_msg = request.fresh('succss_msg')
-            response.locals.error_msg = request.fresh('error_msg')
+            response.locals.success_msg = request.flash('success_msg')
+            response.locals.error_msg = request.flash('error_msg')
             next()
         })
     // express
