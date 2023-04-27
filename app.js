@@ -4,7 +4,22 @@
     const handlebars = require('express-handlebars')
     const admin = require('./routes/admin')
     const mongoose = require('mongoose')
+    const session = require('express-session')
+    const flash = require('connect-flash')
 // configuracao
+    // sessão
+        app.use(session({
+            secret: "cursoNode",
+            resave: true,
+            saveUninitialized: true
+        }))
+        app.use(flash())
+    // midleware
+        app.use((request, response, next) => {
+            response.locals.success_msg = request.fresh('succss_msg')
+            response.locals.error_msg = request.fresh('error_msg')
+            next()
+        })
     // express
         app.use(express.urlencoded({extended: true}))
         app.use(express.json())
@@ -18,11 +33,6 @@
             console.log('banco conectado com sucesso')
         }).catch((err) => {
             console.log('erro ao se conectar ' + err)
-        })
-    // publid
-        app.use((request, response, next) => {
-            console.log('midleware')
-            next()
         })
 // rotas
     app.get('/', (request, response) => {
