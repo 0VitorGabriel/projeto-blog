@@ -19,6 +19,11 @@
         }).catch((err) => {
             console.log('erro ao se conectar ' + err)
         })
+    // publid
+        app.use((request, response, next) => {
+            console.log('midleware')
+            next()
+        })
 // rotas
     app.get('/', (request, response) => {
         response.send('pagina principal')
