@@ -13,7 +13,13 @@ router.get('/posts', (request, response) => {
 })
 
 router.get('/categorias', (request, response) => {
-    response.render('admin/categorias')
+    categoria.find().lean().sort({data: 'desc'})
+    .then((categorias) => {
+        response.render('admin/categorias', {categorias: categorias})
+    }).catch((err) => {
+        request.flash('error_msg', 'erro ao enviar a categoria')
+        response.redirect('/admin')
+    })
 })
 
 router.post('/categorias/nova', (request, response) => {
