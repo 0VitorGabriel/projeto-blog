@@ -10,7 +10,10 @@
         <div class="card-body">
             <h4>{{nome}}</h4>
             <small>slug: {{slug}}</small> <br>
-            {{#formatDate date}}data de criação: {{data}}{{/formatDate}}
+            {{#formatDate date}}data de criação: {{data}}{{/formatDate}} <br>
+            <a href="/admin/categorias/edit/{{_id}}">
+                <button class="btn btn-success mt-4">editar categoria</button>
+            </a>
         </div>
     </div>
 {{else}}
