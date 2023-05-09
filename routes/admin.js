@@ -33,7 +33,7 @@ router.get('/categorias/edit/:id', (request, response) => {
 
 router.post('/categorias/edit', (request, response) => {
     let filter = { _id: request.body.id }
-    let update = { nome: request.body.nome, slug: request.body.slug }
+    let update = { nome: request.body.nome, slug: String(request.body.slug).toLowerCase() }
 
     Categoria.findOneAndUpdate(filter, update).then(() => {
         request.flash("success_msg", "Categoria atualizada")
@@ -59,7 +59,7 @@ router.post('/categorias/deletar', (request, response) => {
 router.post('/categorias/nova', (request, response) => {
     const nova_categoria = {
         nome: request.body.nome,
-        slug: request.body.slug
+        slug: String(request.body.slug).toLowerCase()
     }
 
     new Categoria(nova_categoria).save()
