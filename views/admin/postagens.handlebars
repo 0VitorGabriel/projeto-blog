@@ -4,3 +4,31 @@
 <a href="/admin/postagens/add">
     <button type="button" class="btn btn-success">adicionar postagens</button>
 </a>
+
+{{#each postagens}}
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h4> 
+                {{titulo}} 
+            </h4>
+
+            <p>
+                descricao: {{descricao}}
+            </p>
+
+            <small>
+                Data: {{#formatDate}} {{data}} {{/formatDate}}
+            </small>
+
+            <small>
+                Categoria:  {{categoria}}
+            </small>
+        </div>
+    </div> 
+
+{{else}}
+
+    <h4 class="mt-4">Nenhuma postagem cadastrada</h4>
+
+{{/each}}

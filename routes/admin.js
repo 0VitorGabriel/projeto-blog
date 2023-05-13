@@ -79,7 +79,18 @@ router.get('/categorias/add', (request, response) => {
 })
 
 router.get('/postagens', (request, response) => {
-    response.render('admin/postagens')
+
+    Postagem.find().lean().populate({path: 'categorias', strictPopulate: false}).sort({data: 'desc'})
+
+    .then((postagens) => {
+        response.render('admin/postagens', {postagens: postagens})
+    }) 
+
+    .catch((err) => {
+        request.flash('error_msg', 'erro ao listar as categorias')
+        response.redirect('/admin')
+        console.log(err)
+    })
 })
 
 router.get('/postagens/add', (request, response) => {
