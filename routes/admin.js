@@ -3,6 +3,8 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require('../models/Categoria')
 const Categoria = mongoose.model('categorias')
+require('../models/Postagem')
+const Postagem = mongoose.model('postagens')
 
 router.get('/', (request, response) => {
     response.render('admin/index')
@@ -89,6 +91,42 @@ router.get('/postagens/add', (request, response) => {
         request.flash('error_msg', 'erro ao caregar o formulario')
         response.redirect('/admin')
     })
+})
+
+router.post('/postagens/nova', (request, response) => {
+    var erros = []
+
+    if (request.body.categoria == '0') {
+        erros.push({texto: 'nenhuma categoria registrada, nâo poderá criar uma nova postagem'})
+    }
+
+    if (erros.length > 0) {
+        response.render('admin/add_postagem', {erros: erros})
+    } else {
+        const nova_postagem = {
+            titulo: request.body.titulo,
+            slug: request.body.slug,
+            descricao: request.body.descricao,
+            conteudo: request.body.conteudo,
+            categoria: request.body.categoria
+        }
+
+        new Postagem(nova_postagem).save()
+
+        .then(() => {
+            request.flash('success_msg', 'postagem criada com sucesso')
+            response.redirect('/admin/postagens')
+
+            console.log('postagem criada com sucesso')
+        })
+
+        .catch((err) => {
+            request.flash('error_msg', 'erro ao criar a postagem')
+            response.redirect('/admin/postagens')
+
+            console.log('erro ao criar a postagem ' + err)
+        })
+    }
 })
 
 module.exports = router
