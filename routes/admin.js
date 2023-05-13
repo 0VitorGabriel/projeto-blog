@@ -76,4 +76,19 @@ router.get('/categorias/add', (request, response) => {
     response.render('admin/add_categorias')
 })
 
+router.get('/postagens', (request, response) => {
+    response.render('admin/postagens')
+})
+
+router.get('/postagens/add', (request, response) => {
+    Categoria.find().lean()
+    
+    .then((categorias) => {
+        response.render('admin/add_postagem', {categorias: categorias})
+    }).catch((err) => {
+        request.flash('error_msg', 'erro ao caregar o formulario')
+        response.redirect('/admin')
+    })
+})
+
 module.exports = router
