@@ -140,4 +140,63 @@ router.post('/postagens/nova', (request, response) => {
     }
 })
 
+router.get('/postagens/edit/:id', (request, response) => {
+
+    Postagem.findOne({_id: request.params.id}).lean()
+
+    .then((postagem) => {
+
+        Categoria.find().lean()
+
+        .then((categoria) => {
+            response.render('admin/edit_postagens', {categorias: categoria, postagens: postagem})
+        })
+
+        .catch((err) => {
+            request.flash('error_msg', 'erro ao listar as categorias')
+            
+            response.redirect('/admin/postagens')
+        })
+    })
+
+    .catch((err) => {
+        request.flash('error_msg', 'erro ao carregar o formulario')
+
+        response.redirect('/admin/postagens')
+    })
+
+})
+
+router.post('/postagens/edit', (request, response) => {
+
+    Postagem.findOne({ _id: request.body.id })
+
+    .then((postagem) => {
+        postagem.titulo = request.body.titulo
+        postagem.slug = request.body.slug
+        postagem.descricao = request.body.descricao
+        postagem.conteudo = request.body.conteudo
+        postagem.categoria = request.body.categoria
+
+        postagem.save()
+
+        .then((postagens) => {
+            request.flash('success_msg', 'postagem salva com sucesso')
+            response.redirect('/admin/postagens')
+        })
+
+        .catch((err) => {
+            request.flash('error_msg', 'erro ao salvar a postagem')
+            response.redirect('/admin/postagens')
+        })
+    })
+
+    .catch((err) => {
+        request.flash('error_msg', 'erro ao editar a postagem')
+        response.redirect('/admin/postagens')
+
+        console.log(err)
+    })
+})
+
 module.exports = router
