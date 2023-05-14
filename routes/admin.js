@@ -199,4 +199,20 @@ router.post('/postagens/edit', (request, response) => {
     })
 })
 
+router.get('/postagens/deletar/:id', (request, response) => {
+    Postagem.findByIdAndRemove({_id: request.params.id})
+
+    .then(() => {
+        request.flash('success_msg', 'postagem excluida com sucesso')
+
+        response.redirect('/admin/postagens')
+    })
+
+    .catch((err) => {
+        request.flash('error_msg', 'erro ao excluir a postagens')
+        
+        response.redirect('/admin/postagens')
+    })
+})
+
 module.exports = router
