@@ -7,6 +7,8 @@
     const session = require('express-session')
     const flash = require('connect-flash')
     const moment = require('moment')
+    require('./models/Postagem')
+    const Postagem = mongoose.model('postagens')
 // configuracao
     // sessão
         app.use(session({
@@ -44,7 +46,41 @@
         })
 // rotas
     app.get('/', (request, response) => {
-        response.send('pagina principal')
+        Postagem.find().lean().sort({data: 'desc'})
+
+        .then((postagens) => {
+            response.render('index', {postagens: postagens})
+        })
+
+        .catch((err) => {
+            request.flash('error_msg', 'erro no banco de dados')
+
+            response.redirect('/404')
+        })
+    })
+
+    app.get('/postagens/:slug', (request, response) => {
+        Postagem.findOne({slug: request.params.slug}).lean()
+
+        .then((postagens) => {
+            if (postagens) {
+                response.render('postagens/index', {postagens: postagens})
+            } else {
+                request.flash('error_msg', 'esta postagem não existe')
+
+                response.redirect('/')
+            }
+        })
+
+        .catch((err) => {
+            request.flash('error_msg', 'erro no banco de dados')
+
+            response.redirect('/404')
+        })
+    })
+
+    app.get('/404', (request, response) => {
+        response.send('Erro 404')
     })
 
     app.get('/posts', (request, response) => {

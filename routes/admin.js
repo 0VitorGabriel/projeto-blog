@@ -80,7 +80,7 @@ router.get('/categorias/add', (request, response) => {
 
 router.get('/postagens', (request, response) => {
 
-    Postagem.find().lean().populate({path: 'categorias', strictPopulate: false}).sort({data: 'desc'})
+    Postagem.find().lean().sort({data: 'desc'})
 
     .then((postagens) => {
         response.render('admin/postagens', {postagens: postagens})
