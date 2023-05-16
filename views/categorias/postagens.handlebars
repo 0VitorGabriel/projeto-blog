@@ -1,14 +1,4 @@
-<div class="jumbotron">
-  <h1 class="display-4">Bem vindo ao blog do node</h1>
-  <p class="lead">Este é um Blog desenvolvido com Node.JS + express.js + mongoDB.</p>
-  <hr class="my-4">
-  <p>Aqui você vai poder ler sobre todas as novidades no mundo da computação.</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg" href="#" role="button">crie uma conta</a>
-  </p>
-</div>
-
-<h2>Postagens recentes</h2>
+<h1>Categoria: {{categorias.nome}}</h1>
 
 {{#each postagens}}
     <div class="card mt-4">
@@ -29,5 +19,5 @@
         </div>
     </div>
 {{else}}
-    <h3>Nenhuma postagem cadastrada</h3>
+    <h4>Nenhuma postagem registrada nessa categoria</h4>
 {{/each}}

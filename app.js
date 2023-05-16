@@ -9,6 +9,8 @@
     const moment = require('moment')
     require('./models/Postagem')
     const Postagem = mongoose.model('postagens')
+    require('./models/Categoria')
+    const Categoria = mongoose.model('categorias')
 // configuracao
     // sessão
         app.use(session({
@@ -76,6 +78,52 @@
             request.flash('error_msg', 'erro no banco de dados')
 
             response.redirect('/404')
+        })
+    })
+
+    app.get('/categorias', (request, response) => {
+        Categoria.find().lean()
+
+        .then((categorias) => {
+            response.render('categorias/index', {categorias: categorias})
+        })
+
+        .catch((err) => {
+            request.flash('error_msg', 'erro ao listar as categorias')
+
+            response.redirect('/')
+        })
+    })
+
+    app.get('/categorias/:slug', (request, response) => {
+        Categoria.findOne({slug: request.params.slug}).lean()
+
+        .then((categorias) => {
+            if (categorias) {
+
+                Postagem.find({categoria: categorias._id}).lean()
+
+                .then((postagens) => {
+                    response.render('categorias/postagens', {postagens: postagens, categorias: categorias})
+                })
+
+                .catch((err) => {
+                    request.flash('error_msg', 'erro ao listar as postagen')
+
+                    response.redirect('/')
+                })
+
+            } else {
+                request.flash('error_msg', 'A categoria não existe')
+
+                response.redirect('/')
+            }
+        })
+
+        .catch((err) =>{
+            request.flash('error_msg', 'erro ao carregar a pagina dos posts da categoria')
+
+            response.redirect('/')
         })
     })
 
