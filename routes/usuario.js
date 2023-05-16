@@ -4,6 +4,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require('.././models/Usuario')
 const Usuario = mongoose.model('usuarios')
+const bcrypt = require('bcryptjs')
 
 router.get('/registro', (request, response) => {
     response.render('usuarios/registro')
@@ -38,7 +39,59 @@ router.post('/registro', (request, response) => {
 
     } else {
 
+        Usuario.findOne({email: request.body.email}).lean()
+
+        .then((usuario) => {
+            if (usuario) {
+                request.flash('error_msg', 'email ja usado')
+                response.redirect('/usuarios/registro')
+            } else {
+
+                const novoUsuario = new Usuario({
+                    nome: request.body.nome,
+                    email: request.body.email,
+                    senha: request.body.senha
+                })
+
+                bcrypt.genSalt(10, (erro, salt) => {
+                    bcrypt.hash(novoUsuario.senha, salt, (erro, hash) => {
+                        if (erro) {
+                            request.flash('error_msg', 'erro ao cadastar o usuario')
+
+                            response.redirect('/')
+                        } else {
+                            novoUsuario.senha = hash
+
+                            novoUsuario.save()
+
+                            .then(() => {
+                                request.flash('success_msg', 'usuario cadastrado com sucesso')
+
+                                response.redirect('/')
+                            })
+
+                            .catch((err) => {
+                                request.flash('error_msg', 'erro ao salvar usuario')
+
+                                response.redirect('/usuarios/registro')
+                            })
+                        }
+                    })
+                })
+
+            }
+        })
+
+        .catch((err) => {
+            request.flash('error_msg', 'erro ao consultar o banco de dados')
+
+            response.redirect('/')
+        })
     }
+})
+
+router.get('/login', (request, response) => {
+    response.render('usuarios/login')
 })
 
 module.exports = router
