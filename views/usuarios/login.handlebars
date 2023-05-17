@@ -2,7 +2,7 @@
 
 <div class="card">
     <div class="card-body">
-        <form action="" method="post">
+        <form action="/usuarios/login" method="post">
             <label for="email">
                 email:
             </label>
@@ -13,7 +13,7 @@
                 senha:
             </label>
 
-            <input type="password" name="senha" id="senha" class="form-control" required>
+            <input type="password" name="senha" id="senha" class="form-control" minlength="8" required>
 
             <button type="submit" class="btn btn-success mt-4">
                 login

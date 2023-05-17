@@ -26,13 +26,19 @@ module.exports = function(passport) {
     }))
 
     passport.serializeUser((usuario, done) => {
-        done(null, usuario.id)
+        done(null, usuario._id)
     })
 
     passport.deserializeUser((id, done) => {
-        Usuario.findById(id, (err, usuario) => {
+        Usuario.findById(id).lean()
+        
+        .then((usuario) => {
             done(null, usuario)
-        }).lean()
+        })
+        
+        .catch((err)=>{
+            done (null, false, {message:'algo deu errado'})
+        })
     })
 
 }

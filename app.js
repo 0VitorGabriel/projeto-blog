@@ -24,12 +24,13 @@
 
         app.use(passport.initialize())
         app.use(passport.session())
-        
+
         app.use(flash())
     // midleware
         app.use((request, response, next) => {
             response.locals.success_msg = request.flash('success_msg')
             response.locals.error_msg = request.flash('error_msg')
+            response.locals.error = request.flash('error')
             next()
         })
     // express
