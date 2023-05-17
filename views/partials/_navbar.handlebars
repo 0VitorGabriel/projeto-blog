@@ -13,7 +13,9 @@
           <a class="nav-link" href="/categorias">Categorias</a>
         </li>
         {{#if user}}
-
+            <li class="nav-item">
+            <a class="nav-link" href="/usuarios/logout">Logout</a>
+          </li>
         {{else}}
         
           <li class="nav-item">
@@ -22,7 +24,7 @@
           <li class="nav-item">
             <a class="nav-link" href="/usuarios/registro">Registro</a>
           </li>
-          
+
         {{/if}}
       </ul>
     </div>

@@ -104,4 +104,15 @@ router.post('/login', (request, response, next) => {
 
 })
 
+router.get('/logout', (request, response, next) => {
+    request.logout((err) => {
+        if (err) {
+             return next(err) 
+        } else {
+            request.flash('success_msg', 'usuario deslogado')
+            response.redirect('/')
+        }
+    })
+})
+
 module.exports = router
