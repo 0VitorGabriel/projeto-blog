@@ -6,14 +6,19 @@
     "express-handlebars": "^7.0.7",
     "express-session": "^1.17.3",
     "moment": "^2.29.4",
-    "mongoose": "^7.0.5",
-    "passport": "^0.6.0",
-    "passport-local": "^1.0.0"
+    "mongoose": "^7.0.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
   },
   "scripts": {
+    "start": "node app.js",
     "dev": "nodemon app.js"
-  }
+  },
+  "name": "projeto-blog",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
