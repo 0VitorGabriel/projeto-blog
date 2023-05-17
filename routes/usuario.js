@@ -68,7 +68,7 @@ router.post('/registro', (request, response) => {
                             .then(() => {
                                 request.flash('success_msg', 'usuario cadastrado com sucesso')
 
-                                response.redirect('/')
+                                response.redirect('/usuarios/login')
                             })
 
                             .catch((err) => {
@@ -79,7 +79,6 @@ router.post('/registro', (request, response) => {
                         }
                     })
                 })
-
             }
         })
 
