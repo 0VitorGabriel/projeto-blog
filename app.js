@@ -50,7 +50,7 @@
         app.set('views', './views')
     // mongoose
         mongoose.Promise = global.Promise
-        mongoose.connect('mongodb+srv://Vitor20100:Vitor20100@blog.jv3clak.mongodb.net/blog').then(() => {
+        mongoose.connect('mongodb://127.0.0.1/blog').then(() => {
             console.log('banco conectado com sucesso')
         }).catch((err) => {
             console.log('erro ao se conectar ' + err)
