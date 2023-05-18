@@ -49,22 +49,17 @@
         app.set('view engine', 'handlebars')
         app.set('views', './views')
     // mongoose
-        async function connection_db() {
+        async function connection() {
             try {
                 await mongoose.connect('mongodb://127.0.0.1/blog')
 
-                .then(() => {
-                    console.log('banco conectado com sucesso')
-                }).catch((err) => {
-                    throw Error('erro ao se conectar com o banco de dados')
-                })
-                
+                console.log('banco conectado com sucesso')
             } catch (error) {
                 console.log(error.message)
             }
         }
 
-        connection_db()
+        connection()
 // rotas
     app.get('/', (request, response) => {
         Postagem.find().lean().sort({data: 'desc'})
