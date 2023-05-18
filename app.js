@@ -49,12 +49,22 @@
         app.set('view engine', 'handlebars')
         app.set('views', './views')
     // mongoose
-        mongoose.Promise = global.Promise
-        mongoose.connect('mongodb://127.0.0.1/blog').then(() => {
-            console.log('banco conectado com sucesso')
-        }).catch((err) => {
-            console.log('erro ao se conectar ' + err)
-        })
+        async function connection_db() {
+            try {
+                await mongoose.connect('mongodb://127.0.0.1/blog')
+
+                .then(() => {
+                    console.log('banco conectado com sucesso')
+                }).catch((err) => {
+                    throw Error('erro ao se conectar com o banco de dados')
+                })
+                
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+
+        connection_db()
 // rotas
     app.get('/', (request, response) => {
         Postagem.find().lean().sort({data: 'desc'})
