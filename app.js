@@ -154,5 +154,5 @@
 // outros
     const port = 8081
     app.listen(port, () => {
-        console.log('servidor rodando')
+        console.log('servidor rodando na porta http://127.0.0.1:8081')
     })
