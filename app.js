@@ -61,84 +61,73 @@
 
         connection()
 // rotas
-    app.get('/', (request, response) => {
-        Postagem.find().lean().sort({data: 'desc'})
+    app.get('/', async (request, response) => {
+        try {
+            const postagens = await Postagem.find().lean().sort({data: 'desc'})
 
-        .then((postagens) => {
             response.render('index', {postagens: postagens})
-        })
-
-        .catch((err) => {
+        } catch (error) {
             request.flash('error_msg', 'erro no banco de dados')
 
             response.redirect('/404')
-        })
+        }
     })
 
-    app.get('/postagens/:slug', (request, response) => {
-        Postagem.findOne({slug: request.params.slug}).lean()
+    app.get('/postagens/:slug', async (request, response) => {
+        try {
+            const postagem = await Postagem.findOne({slug: request.params.slug}).lean()
 
-        .then((postagens) => {
-            if (postagens) {
-                response.render('postagens/index', {postagens: postagens})
+            if (postagem) {
+                response.render('postagens/index', {postagens: postagem})
             } else {
                 request.flash('error_msg', 'esta postagem não existe')
 
                 response.redirect('/')
             }
-        })
-
-        .catch((err) => {
+           
+        } catch (error) {
             request.flash('error_msg', 'erro no banco de dados')
 
             response.redirect('/404')
-        })
+        }
     })
 
-    app.get('/categorias', (request, response) => {
-        Categoria.find().lean()
+    app.get('/categorias', async (request, response) => {
+        try {
+            const categoria = await Categoria.find().lean()
 
-        .then((categorias) => {
-            response.render('categorias/index', {categorias: categorias})
-        })
-
-        .catch((err) => {
+            response.render('categorias/index', {categorias: categoria})
+        } catch (error) {
             request.flash('error_msg', 'erro ao listar as categorias')
-
+    
             response.redirect('/')
-        })
+        }
     })
 
-    app.get('/categorias/:slug', (request, response) => {
-        Categoria.findOne({slug: request.params.slug}).lean()
+    app.get('/categorias/:slug', async (request, response) => {
+        try {
+            const categoria = await Categoria.findOne({slug: request.params.slug}).lean()
 
-        .then((categorias) => {
-            if (categorias) {
+            if (categoria) {
+                try {
+                    const postagem = await Postagem.find({categoria: categoria._id}).lean()
 
-                Postagem.find({categoria: categorias._id}).lean()
-
-                .then((postagens) => {
-                    response.render('categorias/postagens', {postagens: postagens, categorias: categorias})
-                })
-
-                .catch((err) => {
+                    response.render('categorias/postagens', {postagens: postagem, categorias: categoria})
+                } catch (error) {
                     request.flash('error_msg', 'erro ao listar as postagen')
 
                     response.redirect('/')
-                })
-
+                }
             } else {
                 request.flash('error_msg', 'A categoria não existe')
 
                 response.redirect('/')
             }
-        })
-
-        .catch((err) =>{
+        } catch (error) {
             request.flash('error_msg', 'erro ao carregar a pagina dos posts da categoria')
 
             response.redirect('/')
-        })
+        }
     })
 
     app.get('/404', (request, response) => {
