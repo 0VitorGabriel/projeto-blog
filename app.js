@@ -48,6 +48,8 @@
         }))
         app.set('view engine', 'handlebars')
         app.set('views', './views')
+
+        connection()
     // mongoose
         async function connection() {
             try {
@@ -58,8 +60,6 @@
                 console.log(error.message)
             }
         }
-
-        connection()
 // rotas
     app.get('/', async (request, response) => {
         try {
