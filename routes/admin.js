@@ -7,11 +7,11 @@ require('../models/Postagem')
 const Postagem = mongoose.model('postagens')
 const { verifica_admin } = require('.././helpers/verifica_admin')
 
-router.get('/', (request, response) => {
+router.get('/', verifica_admin, (request, response) => {
     response.render('admin/index')
 })
 
-router.get('/categorias', (request, response) => {
+router.get('/categorias', verifica_admin, (request, response) => {
     Categoria.find().lean().sort({data: 'desc'})
     .then((categorias) => {
         response.render('admin/categorias', {categorias: categorias})
@@ -21,7 +21,7 @@ router.get('/categorias', (request, response) => {
     })
 })
 
-router.get('/categorias/edit/:id', (request, response) => {
+router.get('/categorias/edit/:id', verifica_admin, (request, response) => {
     Categoria.findOne({_id: request.params.id}).lean().then((categorias) => {
         response.render('admin/edit_categorias', {categoria: categorias})
     }).catch((err) => {
@@ -30,7 +30,7 @@ router.get('/categorias/edit/:id', (request, response) => {
     })
 })
 
-router.post('/categorias/edit', (request, response) => {
+router.post('/categorias/edit', verifica_admin, (request, response) => {
     let filter = { _id: request.body.id }
     let update = { nome: request.body.nome, slug: String(request.body.slug).toLowerCase() }
 
@@ -43,7 +43,7 @@ router.post('/categorias/edit', (request, response) => {
     })
 })
 
-router.post('/categorias/deletar', (request, response) => {
+router.post('/categorias/deletar', verifica_admin, (request, response) => {
    Categoria.deleteOne({_id: request.body.id}).then(() => {
         request.flash('success_msg', 'categoria deletada com sucesso!')
         response.redirect('/admin/categorias')
@@ -55,7 +55,7 @@ router.post('/categorias/deletar', (request, response) => {
    })
 })
 
-router.post('/categorias/nova', (request, response) => {
+router.post('/categorias/nova', verifica_admin, (request, response) => {
     const nova_categoria = {
         nome: request.body.nome,
         slug: String(request.body.slug).toLowerCase()
@@ -71,11 +71,11 @@ router.post('/categorias/nova', (request, response) => {
     })
 })
 
-router.get('/categorias/add', (request, response) => {
+router.get('/categorias/add', verifica_admin, (request, response) => {
     response.render('admin/add_categorias')
 })
 
-router.get('/postagens', (request, response) => {
+router.get('/postagens', verifica_admin, (request, response) => {
 
     Postagem.find().lean().sort({data: 'desc'})
 
@@ -90,7 +90,7 @@ router.get('/postagens', (request, response) => {
     })
 })
 
-router.get('/postagens/add', (request, response) => {
+router.get('/postagens/add', verifica_admin, (request, response) => {
     Categoria.find().lean()
     
     .then((categorias) => {
@@ -101,7 +101,7 @@ router.get('/postagens/add', (request, response) => {
     })
 })
 
-router.post('/postagens/nova', (request, response) => {
+router.post('/postagens/nova', verifica_admin, (request, response) => {
     var erros = []
 
     if (request.body.categoria == '0') {
@@ -137,7 +137,7 @@ router.post('/postagens/nova', (request, response) => {
     }
 })
 
-router.get('/postagens/edit/:id', (request, response) => {
+router.get('/postagens/edit/:id', verifica_admin, (request, response) => {
 
     Postagem.findOne({_id: request.params.id}).lean()
 
@@ -164,7 +164,7 @@ router.get('/postagens/edit/:id', (request, response) => {
 
 })
 
-router.post('/postagens/edit', (request, response) => {
+router.post('/postagens/edit', verifica_admin, (request, response) => {
 
     Postagem.findOne({ _id: request.body.id })
 
@@ -196,7 +196,7 @@ router.post('/postagens/edit', (request, response) => {
     })
 })
 
-router.get('/postagens/deletar/:id', (request, response) => {
+router.get('/postagens/deletar/:id', verifica_admin, (request, response) => {
     Postagem.findByIdAndRemove({_id: request.params.id})
 
     .then(() => {
