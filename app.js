@@ -134,10 +134,6 @@
         response.send('Erro 404')
     })
 
-    app.get('/posts', (request, response) => {
-        response.send('pagina de posts')
-    })
-
     app.use('/admin', admin)
     app.use('/usuarios', usuarios)
 // outros
@@ -145,3 +141,5 @@
     app.listen(port, () => {
         console.log('servidor rodando na porta http://127.0.0.1:8081')
     })
+
+module.exports = app
