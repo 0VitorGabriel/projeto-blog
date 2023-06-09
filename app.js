@@ -141,5 +141,3 @@
     app.listen(port, () => {
         console.log('servidor rodando na porta http://127.0.0.1:8081')
     })
-
-module.exports = app
